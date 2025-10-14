@@ -13,14 +13,44 @@ class App {
   }
 
   // 검증 로직
-  isValid(string) {
-    return true
+  isValidateInput(input) {
+
   }
+
+  // 기본 구분자 처리 로직
+  parseBasicDelimiter(string) {
+    const tokens = []
+    if(string === '') return tokens
+
+    let tmp = ''
+    for (let i = 0; i < string.length; i++) {
+      const char = string[i]
+      if (char === ',' || char === ':') {
+        tokens.push(Number(tmp))
+        tmp = ''
+        continue
+      }
+      tmp += char
+    }
+    tokens.push(Number(tmp))
+    // console.log(tokens);
+    return tokens
+  }
+  // 커스텀 구분자 처리 로직
 
   // run
   async run() {
-    const input = await this.getString()
-    console.log(input);
+    const string = await this.getString()
+    // console.log(string);
+    // 검증
+
+    let tokens
+    if ("1") { // 기본구분자일경우 isValidateInput 결과 "1" 로 구분
+      tokens = this.parseBasicDelimiter(string)
+      console.log(tokens);
+    } else if (this.isValidateInput(string)) { // 커스텀 구분자일경우 isValidateInput 결과 "2" 로 구분
+
+    }
   }
 }
 
