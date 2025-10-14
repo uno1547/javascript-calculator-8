@@ -33,11 +33,26 @@ class App {
       tmp += char
     }
     tokens.push(Number(tmp))
-    // console.log(tokens);
     return tokens
   }
   // 커스텀 구분자 처리 로직
-
+  parseCustomDelimiter(string) {
+    const tokens = []
+    const delimiter = string.slice(2, 3)
+    console.log(delimiter);
+    let tmp = ''
+    for (let i = 5; i < string.length; i++) {
+      const char = string[i]
+      if (char === delimiter) {
+        tokens.push(Number(tmp))
+        tmp = ''
+        continue
+      }
+      tmp += char
+    }
+    tokens.push(Number(tmp))
+    return tokens
+  }
   // run
   async run() {
     const string = await this.getString()
@@ -45,11 +60,12 @@ class App {
     // 검증
 
     let tokens
-    if ("1") { // 기본구분자일경우 isValidateInput 결과 "1" 로 구분
+    if (false) { // 기본구분자일경우 isValidateInput 결과 "1" 로 구분
       tokens = this.parseBasicDelimiter(string)
       console.log(tokens);
-    } else if (this.isValidateInput(string)) { // 커스텀 구분자일경우 isValidateInput 결과 "2" 로 구분
-
+    } else if ("1") { // 커스텀 구분자일경우 isValidateInput 결과 "2" 로 구분
+      tokens = this.parseCustomDelimiter(string)
+      console.log(tokens);
     }
   }
 }
