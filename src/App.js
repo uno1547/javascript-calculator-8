@@ -12,9 +12,20 @@ class App {
     }
   }
 
-  // 검증 로직
-  isValidateInput(input) {
-
+  // 타입 검증
+  getStringType(str) {
+    const trimmed = str.trim();
+    const customDelimiterPattern = /^\/\/(.)\\n(\d+(\1\d+)*)?$/
+    if (customDelimiterPattern.test(trimmed)) {
+      console.log('커스텀구분자');
+      return "2" // 커스텀 구분자일경우 "2" 반환
+    }
+    const basicDelimiterPattern = /^(\d+([,:]\d+)*)?$/
+    if (basicDelimiterPattern.test(trimmed)) {
+      console.log('기본구분자');
+      return "1" // 기본 구분자일경우 "1" 반환
+    }
+    throw new Error("입력값이 올바르지 않습니다.")
   }
 
   // 기본 구분자 처리 로직
@@ -39,7 +50,7 @@ class App {
   parseCustomDelimiter(string) {
     const tokens = []
     const delimiter = string.slice(2, 3)
-    console.log(delimiter);
+    // console.log(delimiter);
     let tmp = ''
     for (let i = 5; i < string.length; i++) {
       const char = string[i]
@@ -56,17 +67,15 @@ class App {
   // run
   async run() {
     const string = await this.getString()
-    // console.log(string);
-    // 검증
-
+    // 타입 검증
+    const getStringType = this.getStringType(string)
     let tokens
-    if (false) { // 기본구분자일경우 isValidateInput 결과 "1" 로 구분
+    if (getStringType === "1") { // 기본구분자일경우 getStringType 결과 "1" 로 구분
       tokens = this.parseBasicDelimiter(string)
-      console.log(tokens);
-    } else if ("1") { // 커스텀 구분자일경우 isValidateInput 결과 "2" 로 구분
+    } else if (getStringType === "2") { // 커스텀 구분자일경우 getStringType 결과 "2" 로 구분
       tokens = this.parseCustomDelimiter(string)
-      console.log(tokens);
     }
+    console.log(tokens);
   }
 }
 
