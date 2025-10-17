@@ -17,15 +17,15 @@ class App {
     const trimmed = str.trim();
     const customDelimiterPattern = /^\/\/(.)\\n(\d+(\1\d+)*)?$/
     if (customDelimiterPattern.test(trimmed)) {
-      console.log('커스텀구분자');
+      // console.log('커스텀구분자');
       return "2" // 커스텀 구분자일경우 "2" 반환
     }
     const basicDelimiterPattern = /^(\d+([,:]\d+)*)?$/
     if (basicDelimiterPattern.test(trimmed)) {
-      console.log('기본구분자');
+      // console.log('기본구분자');
       return "1" // 기본 구분자일경우 "1" 반환
     }
-    throw new Error("입력값이 올바르지 않습니다.")
+    throw new Error("[ERROR]입력값이 올바르지 않습니다.")
   }
 
   // 기본 구분자 처리 로직
@@ -75,7 +75,8 @@ class App {
     } else if (getStringType === "2") { // 커스텀 구분자일경우 getStringType 결과 "2" 로 구분
       tokens = this.parseCustomDelimiter(string)
     }
-    console.log(tokens);
+    const sum = tokens.reduce((acc, val) => acc + val, 0)
+    Console.print(`결과 : ${sum}`);
   }
 }
 
