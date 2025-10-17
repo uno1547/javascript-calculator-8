@@ -42,11 +42,11 @@ class App {
   async run() {
     const string = await this.getString()
     // 타입 검증
-    const getStringType = this.getStringType(string)
+    const stringType = this.getStringType(string)
     let tokens
-    if (getStringType === "1") { // 기본구분자일경우 getStringType 결과 "1" 로 구분
+    if (stringType === "1") { // 기본구분자일경우 getStringType 결과 "1" 로 구분
       tokens = this.parseBasicDelimiter(string)
-    } else if (getStringType === "2") { // 커스텀 구분자일경우 getStringType 결과 "2" 로 구분
+    } else if (stringType === "2") { // 커스텀 구분자일경우 getStringType 결과 "2" 로 구분
       tokens = this.parseCustomDelimiter(string)
     }
     const sum = tokens.reduce((acc, val) => acc + val, 0)
