@@ -17,12 +17,10 @@ class App {
     const trimmed = str.trim();
     const customDelimiterPattern = /^\/\/(.)\\n(\d+(\1\d+)*)?$/
     if (customDelimiterPattern.test(trimmed)) {
-      // console.log('커스텀구분자');
       return "2" // 커스텀 구분자일경우 "2" 반환
     }
     const basicDelimiterPattern = /^(\d+([,:]\d+)*)?$/
     if (basicDelimiterPattern.test(trimmed)) {
-      // console.log('기본구분자');
       return "1" // 기본 구분자일경우 "1" 반환
     }
     throw new Error("[ERROR]입력값이 올바르지 않습니다.")
@@ -30,39 +28,15 @@ class App {
 
   // 기본 구분자 처리 로직
   parseBasicDelimiter(string) {
-    const tokens = []
-    if(string === '') return tokens
-
-    let tmp = ''
-    for (let i = 0; i < string.length; i++) {
-      const char = string[i]
-      if (char === ',' || char === ':') {
-        tokens.push(Number(tmp))
-        tmp = ''
-        continue
-      }
-      tmp += char
-    }
-    tokens.push(Number(tmp))
-    return tokens
+    return string.split(/[,:]/).map(Number)
   }
   // 커스텀 구분자 처리 로직
   parseCustomDelimiter(string) {
-    const tokens = []
-    const delimiter = string.slice(2, 3)
-    // console.log(delimiter);
-    let tmp = ''
-    for (let i = 5; i < string.length; i++) {
-      const char = string[i]
-      if (char === delimiter) {
-        tokens.push(Number(tmp))
-        tmp = ''
-        continue
-      }
-      tmp += char
-    }
-    tokens.push(Number(tmp))
-    return tokens
+    const customDelimiterPattern = /^\/\/(.)\\n(\d+(\1\d+)*)?$/
+    const match = string.match(customDelimiterPattern) 
+    const delimiter = match[1] // 커스텀 구분자
+    const numbersPart = match[2] || '' // '' or 1 or 1;2;3
+    return numbersPart.split(delimiter).map(Number)
   }
   // run
   async run() {
