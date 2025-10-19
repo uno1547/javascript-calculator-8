@@ -1,6 +1,23 @@
 import { Console } from '@woowacourse/mission-utils';
 // Console의 readLineAsync, print를 사용해야함
-class App {
+class Calculator {
+  constructor() {
+    this.string = ''
+    this.result = 0
+  }
+  async init() {
+    this.string = await this.getString()
+    // 타입 검증
+    const stringType = this.getStringType(this.string)
+    let tokens
+    if (stringType === "1") { // 기본구분자일경우 getStringType 결과 "1" 로 구분
+      tokens = this.parseBasicDelimiter(this.string)
+    } else if (stringType === "2") { // 커스텀 구분자일경우 getStringType 결과 "2" 로 구분
+      tokens = this.parseCustomDelimiter(this.string)
+    }
+    this.result = tokens.reduce((acc, val) => acc + val, 0)
+    Console.print(`결과 : ${this.result}`);    
+  }
   // 문자열 입력 받기
   async getString() {
     try {
@@ -8,10 +25,9 @@ class App {
       return input
     } catch (e) {
       Console.print(e.message)
-      return getString()
+      return this.getString()
     }
   }
-
   // 타입 검증
   getStringType(str) {
     const trimmed = str.trim();
@@ -38,19 +54,12 @@ class App {
     const numbersPart = match[2] || '' // '' or 1 or 1;2;3
     return numbersPart.split(delimiter).map(Number)
   }
+}
+class App {
   // run
   async run() {
-    const string = await this.getString()
-    // 타입 검증
-    const stringType = this.getStringType(string)
-    let tokens
-    if (stringType === "1") { // 기본구분자일경우 getStringType 결과 "1" 로 구분
-      tokens = this.parseBasicDelimiter(string)
-    } else if (stringType === "2") { // 커스텀 구분자일경우 getStringType 결과 "2" 로 구분
-      tokens = this.parseCustomDelimiter(string)
-    }
-    const sum = tokens.reduce((acc, val) => acc + val, 0)
-    Console.print(`결과 : ${sum}`);
+    const calculator = new Calculator()
+    await calculator.init()
   }
 }
 
